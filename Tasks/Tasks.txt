@@ -1,0 +1,20 @@
+Polynomial multiplication:
+
+Frontend Design :
+	UI image for the design ()
+	HTML pages () : Using bootstrap
+	Flask integration () 
+	Routes ().
+	
+	
+Backend Design  : 
+	Generating irreducible polynomials GF(2^m) for any m (). I can take this 
+		Using sagemath ? 
+		Using requests library?
+		Using python   ?
+	Grammar Rules & Parser for the input. 
+		Able to parse basic input (x^12 + x^23221 + x^1234)
+		Able to evaluate expressions ((x^234 * x^123242) - (x^23 * x^12))*(x^24)) [Extra]
+		Operator precedence parsing based.
+	Comments and Document the process.
+	
