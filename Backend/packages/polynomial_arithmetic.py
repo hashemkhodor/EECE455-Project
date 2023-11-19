@@ -198,9 +198,10 @@ if __name__ == "__main__":
 For generating irreducible polynomials.
 https://sagecell.sagemath.org/
 sage: R = GF(2)['x']
-sage: for p in R.polynomials(163):
+sage: for p in R.polynomials(983):
 ....:     if p.is_irreducible():
 ....:         print(p)
+....:         break
 """
 
 """x^163 + x^18 + x^17 + x^15 + x^14 + x^12 + x^9 + x^7 + x^6 + x^5 + x^4 + x + 1"""
