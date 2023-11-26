@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Techniques</title>
+    <style>
+            body {
+                background-image: url('home.jpeg'); /* Replace with the actual path to your image file */
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin: 20px;
+            }
+            h1 {
+                color: #333;
+            }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #B3E0FF;
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        input, select {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #001f3f;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        button.clicked, li.clicked {
+            background-color: #003366; /* Darker blue color for clicked state */
+        }
+        </style>
+</head>
+<body>
+    <h1>Choose Your Encryption Technique</h1>
+    <ul>
+        <li onclick="showAffineForm(); setActiveButton('affineButton');" id="affineButton">Affine Cipher</li>
+        <li onclick="showMonoAlphabeticForm(); setActiveButton('monoAlphabeticButton');" id="monoAlphabeticButton">Mono-Alphabetic Cipher</li>
+        <li onclick="showVigenereForm(); setActiveButton('vigenereButton');" id="vigenereButton">Vigenere Cipher</li>
+        <li onclick="showPlayfairForm(); setActiveButton('playfairButton');" id="playfairButton">Playfair Cipher</li>
+        <li onclick="showHillForm(); setActiveButton('hillButton');" id="hillButton">Hill Cipher</li>
+        <li onclick="showExtendedEuclideanForm(); setActiveButton('extendedEuclideanButton');" id="extendedEuclideanButton">Extended Euclidean Algorithm</li>
+    </ul>
+
+    <form id="affineForm" style="display:none;">
+        <label for="a">Enter integer a:</label>
+        <input type="number" id="a" name="a" required>
+
+        <label for="b">Enter integer b:</label>
+        <input type="number" id="b" name="b" required>
+
+        <label for="message">Enter message:</label>
+        <input type="text" id="message" name="message" required>
+
+        <label for="operation">Select operation:</label>
+        <select id="operation" name="operation">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+        </select>
+
+        <button type="button" onclick="performAffineCipher()">Submit</button>
+    </form>
+    
+    <form id="monoAlphabeticForm" style="display:none;">
+            <label for="key">Enter key (26 letters):</label>
+            <input type="text" id="key" name="key" pattern="[a-zA-Z]{26}" title="Key must contain 26 letters" required>
+
+            <label for="monoMessage">Enter message:</label>
+            <input type="text" id="monoMessage" name="monoMessage" required>
+
+            <label for="monoOperation">Select operation:</label>
+            <select id="monoOperation" name="monoOperation">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+
+            <button type="button" onclick="performMonoAlphabeticCipher()">Submit</button>
+    </form>
+    
+    <form id="vigenereForm" style="display:none;">
+            <label for="vigenereKey">Enter key (word or sentence):</label>
+            <input type="text" id="vigenereKey" name="vigenereKey" required>
+
+            <label for="vigenereMessage">Enter message:</label>
+            <input type="text" id="vigenereMessage" name="vigenereMessage" required>
+
+            <label for="vigenereOperation">Select operation:</label>
+            <select id="vigenereOperation" name="vigenereOperation">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+
+            <button type="button" onclick="performVigenereCipher()">Submit</button>
+    </form>
+    
+    <form id="playfairForm" style="display:none;">
+            <label for="playfairKey">Enter key (word or sentence):</label>
+            <input type="text" id="playfairKey" name="playfairKey" required>
+
+            <label for="playfairMessage">Enter message:</label>
+            <input type="text" id="playfairMessage" name="playfairMessage" required>
+
+            <label for="playfairOperation">Select operation:</label>
+            <select id="playfairOperation" name="playfairOperation">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+
+            <button type="button" onclick="performPlayfairCipher()">Submit</button>
+    </form>
+    
+    <form id="hillForm" style="display:none;">
+            <label for="hillKey">Enter key as a matrix:</label>
+            <select id="matrixSize" name="matrixSize">
+                <option value="2">2x2</option>
+                <option value="3">3x3</option>
+            </select>
+
+            <label for="hillMatrix">Enter matrix values:</label>
+            <textarea id="hillMatrix" name="hillMatrix" rows="4" required></textarea>
+
+            <label for="hillMessage">Enter message:</label>
+            <input type="text" id="hillMessage" name="hillMessage" required>
+
+            <label for="hillOperation">Select operation:</label>
+            <select id="hillOperation" name="hillOperation">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+
+            <button type="button" onclick="performHillCipher()">Submit</button>
+    </form>
+    
+    <form id="extendedEuclideanForm" style="display:none;">
+            <label for="modulus">Enter modulus:</label>
+            <input type="number" id="modulus" name="modulus" required>
+
+            <label for="integer">Enter integer:</label>
+            <input type="number" id="integer" name="integer" required>
+
+            <button type="button" onclick="findModularInverse()">Submit</button>
+    </form>
+
+    
+    <script>
+        function setActiveButton(buttonId) {
+            // Remove "clicked" class from all buttons
+            document.querySelectorAll('ul li').forEach(function(button) {
+                button.classList.remove('clicked');
+            });
+
+            // Add "clicked" class to the clicked button
+            document.getElementById(buttonId).classList.add('clicked');
+        }
+        function showAffineForm() {
+                    document.getElementById("affineForm").style.display = "block";
+                    document.getElementById("monoAlphabeticForm").style.display = "none";
+                    document.getElementById("vigenereForm").style.display = "none";
+                    document.getElementById("playfairForm").style.display = "none";
+                    document.getElementById("hillForm").style.display = "none";
+                    document.getElementById("extendedEuclideanForm").style.display = "none";
+                }
+
+        function showMonoAlphabeticForm() {
+            document.getElementById("monoAlphabeticForm").style.display = "block";
+            document.getElementById("affineForm").style.display = "none";
+            document.getElementById("vigenereForm").style.display = "none";
+            document.getElementById("playfairForm").style.display = "none";
+            document.getElementById("hillForm").style.display = "none";
+            document.getElementById("extendedEuclideanForm").style.display = "none";
+        }
+
+        function showVigenereForm() {
+            document.getElementById("vigenereForm").style.display = "block";
+            document.getElementById("affineForm").style.display = "none";
+            document.getElementById("monoAlphabeticForm").style.display = "none";
+            document.getElementById("playfairForm").style.display = "none";
+            document.getElementById("hillForm").style.display = "none";
+            document.getElementById("extendedEuclideanForm").style.display = "none";
+        }
+
+        function showPlayfairForm() {
+            document.getElementById("playfairForm").style.display = "block";
+            document.getElementById("affineForm").style.display = "none";
+            document.getElementById("monoAlphabeticForm").style.display = "none";
+            document.getElementById("vigenereForm").style.display = "none";
+            document.getElementById("hillForm").style.display = "none";
+            document.getElementById("extendedEuclideanForm").style.display = "none";
+        }
+
+        function showHillForm() {
+            document.getElementById("hillForm").style.display = "block";
+            document.getElementById("affineForm").style.display = "none";
+            document.getElementById("monoAlphabeticForm").style.display = "none";
+            document.getElementById("vigenereForm").style.display = "none";
+            document.getElementById("playfairForm").style.display = "none";
+            document.getElementById("extendedEuclideanForm").style.display = "none";
+        }
+
+        function showExtendedEuclideanForm() {
+            document.getElementById("extendedEuclideanForm").style.display = "block";
+            document.getElementById("affineForm").style.display = "none";
+            document.getElementById("monoAlphabeticForm").style.display = "none";
+            document.getElementById("vigenereForm").style.display = "none";
+            document.getElementById("playfairForm").style.display = "none";
+            document.getElementById("hillForm").style.display = "none";
+        }
+    </script>
+</body>
+</html>
