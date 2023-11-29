@@ -155,10 +155,12 @@ class Playfair:
 ##################################### Vigenere Cipher #####################################################################
 
 LETTERS = "".join(str(i) for i in range(10)) + string.ascii_letters
+LETTERS = string.ascii_lowercase
 
 
 class Vigenere:
     LETTERS = "".join(str(i) for i in range(10)) + string.ascii_letters
+    LETTERS = string.ascii_lowercase
     KEYS = dict([(LETTERS[i], i) for i in range(len(LETTERS))])
 
     def __init__(self, key):
@@ -195,18 +197,27 @@ class Vigenere:
         for i in range(len(text)):
             if text[i] in Vigenere.KEYS:
                 LIST.append(self.key[index])
-                index = (index + 1) % self.__mod__
+                index = (index + 1) % len(self.key)
             else:
                 LIST.append(" ")
         return "".join(LIST)
 
     def encrypt(self, text):
         EXTENDED_KEY = self._get_vigenere_string_(text)
+        print("#############ENC########################")
+        print(text)
+        print(EXTENDED_KEY)
+        print(Vigenere.KEYS["d"], Vigenere.KEYS["w"], self.TRANSFORM_ENC("d", "w"))
+        print("#############ENC########################")
 
         return "".join(list(map(self.TRANSFORM_ENC, text, EXTENDED_KEY)))
 
     def decrypt(self, text):
         EXTENDED_KEY = self._get_vigenere_string_(text)
+        print("#############DEC########################")
+        print(text)
+        print(EXTENDED_KEY)
+        print("#############DEC########################")
         return "".join(list(map(self.TRANSFORM_DEC, text, EXTENDED_KEY)))
 
 
@@ -267,7 +278,7 @@ class Affine:
 if __name__ == "__main__":
     import string
 
-    B = Vigenere("hashemWhatisWRONGwithyou12023")
+    B = Vigenere("deceptive")
     TEXT = "I want to get her back okay !I Want &@*$@!#)@#$(@$)!#(@!#(!@$(@!(#!@($)))))"
     CIPHERTEXT = B.encrypt(TEXT)
     PLAINTEXT = B.decrypt(CIPHERTEXT)
