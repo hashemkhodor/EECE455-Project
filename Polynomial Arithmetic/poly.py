@@ -20,7 +20,7 @@ POLYNOMIALS = json.loads(
         "r",
     ).read()
 )
-
+print(POLYNOMIALS)
 ###############################################################################################################
 # Your polynomial class, State class, and other functions go here
 
