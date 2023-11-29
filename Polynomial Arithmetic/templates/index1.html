@@ -2,102 +2,107 @@
 <html lang="en">
 <head>
     <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-image: url("/static/sub.jpeg");
-        background-size: cover ; 
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        margin: 0;
-        padding: 20;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("/static/sub.jpeg");
+            background-size: cover ; 
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px; /* Fixed the padding property */
+        }
 
-    header {
+        header {
             font-family: 'Georgia', serif;
             margin-top: 78px;
-
-            margin-right: 450px;
+            margin-right: 450px; /* Fixed the margin-right property */
             color: #fff;
             text-align: center;
             padding: 40px;
             font-size: 35px;
-            
         }
         
         header h1 {
-                    
-        line-height: 0.5;
-    }
-    
-    .container {
-        max-width: 600px;
-        margin: 50px auto;
-        padding: 20px;
-        color:#ccc;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    label {
-        display: block;
-        margin-top: 10px;
-    }
-    
-    input, select, button {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
-    
-    button {
-        background-color: white;
-        color:#007BFF;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    
-    button:hover {
-        background-color: white;
+            line-height: 1;
+            margin-top: -40px;
+            padding-top: 20px;
+            margin-right: -450px ; 
+            vertical-align: middle;
+            font-size: 24px;
+        }
+        header h2 {
 
-    }
-    
-    
-    #result {
-        margin-top: 20px;
-        font-weight: bold;
-        color: #333;
-    }
-    .steps-container {
-        margin-top: 20px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    
-    .steps-container div {
-        margin-bottom: 10px;
-    }
-</style>
-    
-    
+        }
+        hr {
+            margin-top: -100px ;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            color: #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: white;
+            color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: white;
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .steps-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .steps-container div {
+            margin-bottom: 10px;
+        }
+    </style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
 </head>
-<header>
-    <h1>Polynomial Arithmetic</h1>
-    <h1>in GF(2^m)</h1>
-    
-</header>
 <body>
+    <header>
+        <h1>Polynomial Arithmetic</h1>
+        <h1>in GF(2^m)</h1>
+    </header>
+    
     <div class="container">
         <hr class="line">
         
         <h2 class="operation-title">Polynomial Operations</h2>
-        
+        <h3 class="operation-title">Type 0b for binary format</h3>
         <label for="mValue">Choose m for GF(2^m):</label>
         <input type="number" id="mValue" min="1" required>
 
@@ -117,7 +122,7 @@
         <button onclick="performOperation()">Calculate</button>
 
         <div id="result"></div>
-        <div id="steps" class="steps-container"></div>
+        <table id="steps" class="x-container"></table>
     </div>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

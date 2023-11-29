@@ -26,7 +26,9 @@ function performOperation() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json().then(errorData => {
+                throw new Error(errorData.error);
+            });
         }
         return response.json();
     })
@@ -37,9 +39,10 @@ function performOperation() {
         // If the operation is 'inverse', display the steps
         if (operation === 'inverse' && data.steps) {
             const stepsContainer = document.getElementById('steps');
-            stepsContainer.innerHTML = '<h3>Extended Euclidean Algorithm Steps:</h3>';
-            data.steps.forEach(step => {
-                stepsContainer.innerHTML += `<div>${step}</div>`;
+            stepsContainer.innerHTML = '';
+            // Display steps from the provided HTML array
+            data.steps.forEach(stepHTML => {
+                stepsContainer.innerHTML += `${stepHTML}`;
             });
         } else {
             // Clear the steps container if the operation is not 'inverse'
@@ -47,6 +50,7 @@ function performOperation() {
         }
     })
     .catch(error => {
+        // Handle the error
         console.error('Error:', error);
         document.getElementById('result').innerText = `Error: ${error.message}`;
     });

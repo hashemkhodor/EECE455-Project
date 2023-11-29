@@ -95,7 +95,6 @@ class State:
             ]
         ), "Invalid Content"
         self.__content__ = content
-
     def toHTMLHex(self):
         skeleton = """<tr>
                     <td colspan="2" rowspan="2">{}</td>
@@ -141,6 +140,64 @@ class State:
             str(self.__content__["b"]),
         )
         return skeleton
+    def toHTMLHex2(self, step_number):
+         if step_number == 1:
+         # Initialization step
+             skeleton = """<tr>
+                             <td colspan="2">Initialization: A1(x) = {}, A2(x) = {}, A3(x) = {}, B1(x) = {}, B2(x) = {}, B3(x) = {} </td>
+                         </tr>""".format(
+                 self.__content__["r11"].toHex(),
+                 self.__content__["r12"].toHex(),
+                 self.__content__["a"].toHex(),
+                 self.__content__["r21"].toHex(),
+                 self.__content__["r22"].toHex(),
+                 self.__content__["b"].toHex(),
+             )
+         else:
+             # Iteration step
+             skeleton = """<tr>
+                             <td colspan="2">Step {}: Q(x) = {}, A1(x) = {}, A2(x) = {}, A3(x) = {}, B1(x) = {}, B2(x) = {}, B3(x) = {}</td>
+                         </tr>""".format(
+                 step_number,
+                 self.__content__["Q"].toHex(),
+                 self.__content__["r11"].toHex(),
+                 self.__content__["r12"].toHex(),
+                 self.__content__["a"].toHex(),
+                 self.__content__["r21"].toHex(),
+                 self.__content__["r22"].toHex(),
+                 self.__content__["b"].toHex(),
+             )
+         return skeleton
+
+    def toHTMLStr2(self, step_number):
+         if step_number == 1:
+             # Initialization step
+             skeleton = """<tr>
+                             <td>{}, {},  {}, {},  {}, {}</td>
+                           </tr>""".format(
+                 str(self.__content__["r11"]),
+                 str(self.__content__["r12"]),
+                 str(self.__content__["a"]),
+                 str(self.__content__["r21"]),
+                 str(self.__content__["r22"]),
+                 str(self.__content__["b"]),
+             )
+         else:
+             # Iteration step
+             skeleton = """<tr>
+                             <td>{}</td>
+                             <td>{}, {}, {},  {}, {}, {}</td>
+                           </tr>""".format(
+                 step_number,
+                 str(self.__content__["Q"]),
+                 str(self.__content__["r11"]),
+                 str(self.__content__["r12"]),
+                 str(self.__content__["a"]),
+                 str(self.__content__["r21"]),
+                 str(self.__content__["r22"]),
+                 str(self.__content__["b"]),
+             )
+         return skeleton
 
 
 STATES = []
