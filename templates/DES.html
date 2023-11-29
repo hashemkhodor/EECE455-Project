@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("/static/sub.jpeg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20;
+        }
+
+        header {
+            font-family: 'Georgia', serif;
+
+            color: #fff;
+            padding: 40px;
+            font-size: 55px;
+            margin: 0; 
+        }
+        header h1{
+            margin-top: 130px;
+            margin-left: 350px;
+        }
+
+        nav {
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+
+       h2{
+        color: #fff;
+        
+        font-size: 35px;
+        margin-left: 320px;
+       }
+
+        
+
+        form {
+            margin-right: 910px;
+            display: inline-block;
+            text-align: left;
+            font-size: 30px;
+            margin-left: 35px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form input[type="submit"] {
+            background-color: #fff;
+            color:#007BFF;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .form-container{
+            display: inline-block;
+            margin-right: 10px; /* Adjust the spacing between form elements */
+        }
+        
+
+       
+
+        table {
+            width: 40%;
+            border-collapse: collapse;
+            margin-top: -570px;
+            background-color: white;
+            margin-left: 980px; /* Adjust the spacing from the left */
+           
+        }
+
+        table, th, td {
+            color: #fff;
+            border: 3px solid #C8C8C8;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: center;
+            color: #3375FF;
+            font-size: 20px;
+        }
+
+        th {
+            background-color: #ccc;
+            color: #3375FF;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DES</h1>
+    </header>
+    <nav>
+        <div >
+            <div class="form-container">
+                <form action="" method="POST">
+                    <label for="plain">Enter Number to Encrypt/Decrypt:</label>
+                    <input type="text" name="plain"><br>
+                    <label for="key">Enter Key:</label>
+                    <input type="text" name="key"><br>
+
+                    <input type="submit" name="encrypt" value="Encrypt">
+                    <input type="submit" name="decrypt" value="Decrypt">
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div >
+        <h2>Results of DES {{ proc }}:</h2>
+        <h2>{{ r }} </h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Round</th>
+                    <th>Ki</th>
+                    <th>Li</th>
+                    <th>Ri</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in result %}
+                    <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                        <td>{{ row[3] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
