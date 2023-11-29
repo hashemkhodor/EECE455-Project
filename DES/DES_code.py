@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
-app = Flask(__name__) #create instance of flask
+
+app = Flask(__name__)  # create instance of flask
 
 
 ############## Defined variables #########################################################################
@@ -565,60 +566,54 @@ def generate_all_keys(key):
 
 
 def DES(plaintext, key):
-    keys=[]
-    L,R=[],[]
-    
-    
+    keys = []
+    L, R = [], []
+
     plaintext = initial_permutation(plaintext)
     keys.append("")
-    L.append(str(hex(int('0b{}'.format(plaintext[:32]),2))))
-    R.append(str(hex(int('0b{}'.format(plaintext[32:]),2))))
+    L.append(str(hex(int("0b{}".format(plaintext[:32]), 2))))
+    R.append(str(hex(int("0b{}".format(plaintext[32:]), 2))))
     key = permuted_choice_1(key)
     # print(len(key))
     for i in range(16):
         rotations = schedule_left_shifts(i)
-        
+
         key = circularshiftleft(key, rotations)
         _key_ = permuted_choice_2(key)
-        
-        
-        
-        
-        
+
         plaintext = round(plaintext, _key_, i)
-        keys.append(hex(int('0b{}'.format('0'*(64-len(_key_))+_key_),2)))
-        L.append(str(hex(int('0b{}'.format(plaintext[:32]),2))))
-        R.append(str(hex(int('0b{}'.format(plaintext[32:]),2))))
-        
-        
-        
+        keys.append(hex(int("0b{}".format("0" * (64 - len(_key_)) + _key_), 2)))
+        L.append(str(hex(int("0b{}".format(plaintext[:32]), 2))))
+        R.append(str(hex(int("0b{}".format(plaintext[32:]), 2))))
+
     ciphertext = bit_swap_32(plaintext)
     ciphertext = inverse_initial_permutation(ciphertext)
     # print(len(ciphertext))
-    L.append(str(hex(int('0b{}'.format(ciphertext[:32]),2))))
-    R.append(str(hex(int('0b{}'.format(ciphertext[32:]),2))))
+    L.append(str(hex(int("0b{}".format(ciphertext[:32]), 2))))
+    R.append(str(hex(int("0b{}".format(ciphertext[32:]), 2))))
     keys.append("")
-    return keys,L,R
+    return keys, L, R
+
 
 def DES_DECRYPT(ciphertext, key):
-    keyss=[]
-    L,R=[],[]
+    keyss = []
+    L, R = [], []
     ciphertext = initial_permutation(ciphertext)
     keyss.append("")
-    L.append(str(hex(int('0b{}'.format(ciphertext[:32]),2))))
-    R.append(str(hex(int('0b{}'.format(ciphertext[32:]),2))))
+    L.append(str(hex(int("0b{}".format(ciphertext[:32]), 2))))
+    R.append(str(hex(int("0b{}".format(ciphertext[32:]), 2))))
     keys = generate_all_keys(key)
-    for i in range(16):      
+    for i in range(16):
         ciphertext = round(ciphertext, keys[i], i)
         _key_ = keys[i]
-        keyss.append(hex(int('0b{}'.format('0'*(64-len(_key_))+_key_),2)))
-        L.append(str(hex(int('0b{}'.format(ciphertext[:32]),2))))
-        R.append(str(hex(int('0b{}'.format(ciphertext[32:]),2))))
+        keyss.append(hex(int("0b{}".format("0" * (64 - len(_key_)) + _key_), 2)))
+        L.append(str(hex(int("0b{}".format(ciphertext[:32]), 2))))
+        R.append(str(hex(int("0b{}".format(ciphertext[32:]), 2))))
     plaintext = bit_swap_32(ciphertext)
-    L.append(str(hex(int('0b{}'.format(plaintext[:32]),2))))
-    R.append(str(hex(int('0b{}'.format(plaintext[32:]),2))))
+    L.append(str(hex(int("0b{}".format(plaintext[:32]), 2))))
+    R.append(str(hex(int("0b{}".format(plaintext[32:]), 2))))
     keyss.append("")
-    return keyss,L,R
+    return keyss, L, R
 
 
 """
@@ -670,45 +665,82 @@ def F(plaintext, key):
 def nice_format(text):
     return " ".join(group_text(text, 4))
 
-@app.route("/",methods=['POST','GET'])
-def m(): 
+
+@app.route("/", methods=["POST", "GET"])
+def m():
     result = []
     proc = ""
     r = ""
-    if request.method == 'POST':
-        if 'encrypt' in request.form:
-            p = int(request.form.get('plain'),16)
-            plaintext=str(bin(p))[2:]
-            plaintext="0"*(64-len(plaintext))+plaintext
-            
-            k = int(request.form.get('key'),16)
+    if request.method == "POST":
+        if "encrypt" in request.form:
+            p = int(request.form.get("plain"), 16)
+            plaintext = str(bin(p))[2:]
+            plaintext = "0" * (64 - len(plaintext)) + plaintext
 
-            key=str(bin(k))[2:]
-            key="0"*(64-len(key))+key
-            keys,L,R=DES(plaintext,key)
-            rounds = ["IP",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,"IP-1"]
-            result = [(x, y, z,w) for x, y, z,w in zip(rounds,keys, L, R)]
+            k = int(request.form.get("key"), 16)
+
+            key = str(bin(k))[2:]
+            key = "0" * (64 - len(key)) + key
+            keys, L, R = DES(plaintext, key)
+            rounds = [
+                "IP",
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                "IP-1",
+            ]
+            result = [(x, y, z, w) for x, y, z, w in zip(rounds, keys, L, R)]
             proc = "Encryption"
-            r = str(L[17])+str(R[17])
-           
+            r = str(L[17]) + str(R[17])
+
         else:
-            p = int(request.form.get('plain'),16)
-    
-            plaintext=str(bin(p))[2:]
-            plaintext="0"*(64-len(plaintext))+plaintext
-            k = int(request.form.get('key'),16)
-            key=str(bin(k))[2:]
-            key="0"*(64-len(key))+key
-            keys,L,R=DES_DECRYPT(plaintext,key)
-            rounds = ["IP",1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,"IP-1"]
-            result = [(x, y, z,w) for x, y, z,w in zip(rounds,keys, L, R)]
+            p = int(request.form.get("plain"), 16)
+
+            plaintext = str(bin(p))[2:]
+            plaintext = "0" * (64 - len(plaintext)) + plaintext
+            k = int(request.form.get("key"), 16)
+            key = str(bin(k))[2:]
+            key = "0" * (64 - len(key)) + key
+            keys, L, R = DES_DECRYPT(plaintext, key)
+            rounds = [
+                "IP",
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                "IP-1",
+            ]
+            result = [(x, y, z, w) for x, y, z, w in zip(rounds, keys, L, R)]
             proc = "Decryption"
-            r = str(L[17])+str(R[17])
-            
-    return render_template("DES.html",result=result, proc=proc, r =r )
+            r = str(L[17]) + str(R[17])
+
+    return render_template("DES.html", result=result, proc=proc, r=r)
+
+
 if __name__ == "__main__":
-    app.run() 
-    
-    
-    
-    
+    app.run()

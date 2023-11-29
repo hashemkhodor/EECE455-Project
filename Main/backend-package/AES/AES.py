@@ -44,8 +44,6 @@ from AES_tables import *
 from polynomial_arithmetic import polynomial
 from typing import List
 import numpy as np
-from flask import Flask, request, render_template
-app = Flask(__name__) #create instance of flask
 
 
 def transpose(M):
@@ -66,8 +64,7 @@ def intTOHEX(M: List[List[int]]):
         ]
         for row in M
     ]
-    return  "\n".join([" ".join(x) for x in _M_Formated_]) + "\n"
-
+    return "\n".join([" ".join(x) for x in _M_Formated_]) + "\n"
 
 
 def matrix_mult(A, B, mod):
@@ -141,11 +138,10 @@ def printMatrix(matrix):
 
 class AES:
     def __init__(self, key):
-        #assert type(key) == int, "Invalid Type"
+        # assert type(key) == int, "Invalid Type"
         fix = lambda x: "0" * (10 - len(hex(x))) + hex(x)[2:]
         self.__keys__ = []
-        temp_keys, keywords, auxillary= self.expand_key(key)
-
+        temp_keys, keywords, auxillary = self.expand_key(key)
 
         for i in range(0, len(temp_keys), 4):
             keys = list(map(fix, temp_keys[i : i + 4]))
@@ -154,9 +150,9 @@ class AES:
         # self.__key__ = self.expand_key(key)
 
     def expand_key(self, key):
-        keywords=[]
+        keywords = []
         aux = []
-        
+
         """
 
         Parameters
@@ -184,58 +180,56 @@ class AES:
             #     int("0x" + new_key[4 * i + 2], 16),
             #     int("0x" + new_key[4 * i + 3], 16),
             # ]
-            kwi=f"w{i} = {'0'*(10-len(hex(w[i])))+hex(w[i])[2:]}"
+            kwi = f"w{i} = {'0'*(10-len(hex(w[i])))+hex(w[i])[2:]}"
             keywords.append(kwi)
 
         for i in range(4, 44):
             temp = w[i - 1]
             a = ""
             if i % 4 == 0:
-                #print(i // 4)
+                # print(i // 4)
                 temp = RotWord(temp)
-                a=f"RotWord(w{i-1}) = {'0'*(10-len(hex(temp)))+hex(temp)[2:]} = x{i//4}"
-                a+="\n"
+                a = f"RotWord(w{i-1}) = {'0'*(10-len(hex(temp)))+hex(temp)[2:]} = x{i//4}"
+                a += "\n"
                 temp = SubWord(temp)
-                a+=f"SubWord({i//4}) = {'0'*(10-len(hex(temp)))+hex(temp)[2:]} = y{i//4}" 
-                a+="\n"
-                a+=f"RCON({i//4}) = {'0'*(10-len(hex(RC_table[i // 4])))+hex(RC_table[i // 4])[2:]}"
-                a+="\n"
+                a += f"SubWord({i//4}) = {'0'*(10-len(hex(temp)))+hex(temp)[2:]} = y{i//4}"
+                a += "\n"
+                a += f"RCON({i//4}) = {'0'*(10-len(hex(RC_table[i // 4])))+hex(RC_table[i // 4])[2:]}"
+                a += "\n"
                 temp = temp ^ RC_table[i // 4]
-                a+=f"y{i//4} xor Rcon({i//4}) = {'0'*(10-len(hex(temp)))+hex(temp)[2:]} = z{i//4}"
+                a += f"y{i//4} xor Rcon({i//4}) = {'0'*(10-len(hex(temp)))+hex(temp)[2:]} = z{i//4}"
                 aux.append(a)
-                
+
                 # print(hex(temp))
-               
+
                 # temp = SubWord(RotWord(temp)) ^ RC_table[i // 4]
 
             w[i] = temp ^ w[i - 4]
-           
-        
+
             if i % 4 == 3:
                 for j in range(4):
                     kwi = ""
-                    if(j==0):
-                        kwi=f"w{i+j-3} = w{i-7} xor z{i//4} = {hex(w[i - j - 3])}"
+                    if j == 0:
+                        kwi = f"w{i+j-3} = w{i-7} xor z{i//4} = {hex(w[i - j - 3])}"
                     else:
-                        kwi=f"w{i+j-3} = w{i+j-4} xor w{i+j-7} = {hex(w[i - j - 3])}"
-                    
+                        kwi = f"w{i+j-3} = w{i+j-4} xor w{i+j-7} = {hex(w[i - j - 3])}"
+
                     keywords.append(kwi)
-                    
+
         keywordsCombined = []
         for i in range(len(keywords)):
-            if i % 4 == 0 and i!=0:
+            if i % 4 == 0 and i != 0:
                 keywordsCombined.append(a)
                 a = keywords[i]
             else:
-                a+="\n"
-                a+= keywords[i]
-                if(i==43):
+                a += "\n"
+                a += keywords[i]
+                if i == 43:
                     keywordsCombined.append(a)
-        
+
         aux.append("")
 
-        return w,keywordsCombined, aux
-
+        return w, keywordsCombined, aux
 
     def add_round_key(self, text_formatted, key):
         new_text = [
@@ -291,94 +285,51 @@ class AES:
         afterSubBytes.append("")
         afterShiftRows.append("")
         afterMixColumns.append("")
-        #print(intTOHEX(plaintext_formatted))
+        # print(intTOHEX(plaintext_formatted))
         plaintext_formatted = self.add_round_key(plaintext_formatted, self.__keys__[0])
         roundKey.append(intTOHEX(self.__keys__[0]))
         for i in range(1, 11):
-            
             startOfRound.append(intTOHEX(plaintext_formatted))
-            #print("Start")
-            #print(intTOHEX(plaintext_formatted))
+            # print("Start")
+            # print(intTOHEX(plaintext_formatted))
 
             plaintext_formatted = self.substitute_bytes(plaintext_formatted)
-           
+
             afterSubBytes.append(intTOHEX(plaintext_formatted))
-            #print("After sub")
-            #print(intTOHEX(plaintext_formatted))
-            
+            # print("After sub")
+            # print(intTOHEX(plaintext_formatted))
+
             plaintext_formatted = self.shift_rows(plaintext_formatted)
             afterShiftRows.append(intTOHEX(plaintext_formatted))
-            #print("After shift")
-           # print(intTOHEX(plaintext_formatted))
-            
-            
+            # print("After shift")
+            # print(intTOHEX(plaintext_formatted))
+
             if i != 10:
-                #print("Print After mix")
+                # print("Print After mix")
                 plaintext_formatted = self.mix_columns(plaintext_formatted)
-                #print(intTOHEX(plaintext_formatted))
-                
-                
+                # print(intTOHEX(plaintext_formatted))
+
             afterMixColumns.append(intTOHEX(plaintext_formatted))
-            
-                
-        
+
             plaintext_formatted = self.add_round_key(
                 plaintext_formatted, self.__keys__[i]
             )
             roundKey.append(intTOHEX(self.__keys__[i]))
-            #print(intTOHEX(self.__keys__[i]))
-            #print("##############################")
-            
-                
+            # print(intTOHEX(self.__keys__[i]))
+            # print("##############################")
+
         startOfRound.append(intTOHEX(plaintext_formatted))
         afterSubBytes.append("")
         afterShiftRows.append("")
         afterMixColumns.append("")
         roundKey.append("")
-        
-        #print(intTOHEX(plaintext_formatted))
-        return (intTOHEX(plaintext_formatted)), startOfRound, afterSubBytes, afterShiftRows, afterMixColumns, roundKey
 
-@app.route("/",methods=['POST','GET'])
-def m():
-    ciphertext = ""
-    result1 = []
-    result2 = []
-    
-    if request.method == 'POST':
-        plaintext = int(request.form.get('plain'),16)
-        #hex_value = hex(p)[2:]
-        #plaintext="0x" + "0" * (len(hex_value) % 2) + hex_value
-        
-    
-        print(plaintext)
-        
-        #k = int(request.form.get('key'),16)
-        #hex_value = hex(k)[2:]
-        #key="0x" + "0" * (len(hex_value) % 2) + hex_value
-        key = int(request.form.get('key'),16)
-
-        
-        
-        
-        c = AES(key)
-        rrr, keywords, aux = c.expand_key(key)
-        ciphertext, startOfRound, afterSubBytes, afterShiftRows, afterMixColumns, roundKey = c.encrypt(plaintext)
-        result1 = [(x, y) for x, y in zip(keywords,aux)]
-        result2 = [(x, y, z,w,n) for x, y, z,w,n in zip(startOfRound,afterSubBytes, afterShiftRows, afterMixColumns,roundKey)]
-        print(len(result2))
-    
-        
-    return render_template("AES.html", ciphertext=ciphertext, result1=result1, result2=result2)
-        
-        
-    
-
-if __name__ == "__main__":
-    app.run() 
-    
-    
-
-    
-
-    
+        # print(intTOHEX(plaintext_formatted))
+        return (
+            (intTOHEX(plaintext_formatted)),
+            startOfRound,
+            afterSubBytes,
+            afterShiftRows,
+            afterMixColumns,
+            roundKey,
+        )
