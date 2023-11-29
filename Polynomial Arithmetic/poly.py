@@ -10,8 +10,13 @@ app.static_folder = "static"
 import os
 import json
 
+isMAC=True #If you are macos , set it to True
+delimeter="\\"
+if isMAC:
+    delimeter="/"
+
 PATH = os.path.abspath(__file__)
-PATH = PATH.split("\\")[:-1]
+PATH = PATH.split(delimeter)[:-1]
 PATH = "/".join(PATH)
 
 POLYNOMIALS = json.loads(
@@ -20,7 +25,7 @@ POLYNOMIALS = json.loads(
         "r",
     ).read()
 )
-
+print(POLYNOMIALS)
 ###############################################################################################################
 # Your polynomial class, State class, and other functions go here
 
