@@ -24,36 +24,37 @@ function performOperation() {
             poly2,
         }),
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(errorData => {
-                throw new Error(errorData.error);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Update the result on the frontend
-        document.getElementById('result').innerText = `Result: ${data.result}`;
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update the result on the frontend
+            document.getElementById('result').innerText = `Result: ${data.result}`;
 
-        // If the operation is 'inverse', display the steps
-        if (operation === 'inverse' && data.steps) {
-            const stepsContainer = document.getElementById('steps');
-            stepsContainer.innerHTML = '';
-            // Display steps from the provided HTML array
-            data.steps.forEach(stepHTML => {
-                stepsContainer.innerHTML += `${stepHTML}`;
-            });
-        } else {
-            // Clear the steps container if the operation is not 'inverse'
-            document.getElementById('steps').innerHTML = '';
-        }
-    })
-    .catch(error => {
-        // Handle the error
-        console.error('Error:', error);
-        document.getElementById('result').innerText = `Error: ${error.message}`;
-    });
+            // If the operation is 'inverse', display the steps
+            if (operation === 'inverse' && data.steps) {
+                const stepsContainer = document.getElementById('steps');
+                stepsContainer.innerHTML = '<table>';
+                // Display steps from the provided HTML array
+                data.steps.forEach(stepHTML => {
+                    stepsContainer.innerHTML += `${stepHTML}`;
+                });
+                stepsContainer.innerHTML = '</table>';
+            } else {
+                // Clear the steps container if the operation is not 'inverse'
+                document.getElementById('steps').innerHTML = '';
+            }
+        })
+        .catch(error => {
+            // Handle the error
+            console.error('Error:', error);
+            document.getElementById('result').innerText = `Error: ${error.message}`;
+        });
 }
 
 function handleOperationChange() {
@@ -92,22 +93,22 @@ function showSteps() {
             poly1: document.getElementById('poly').value,
         }),
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Update the steps on the frontend
-        const steps = data.steps;
-        stepsDiv.innerHTML = '<h3>Extended Euclidean Algorithm Steps:</h3>';
-        steps.forEach(step => {
-            stepsDiv.innerHTML += `<div>${step}</div>`;
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update the steps on the frontend
+            const steps = data.steps;
+            stepsDiv.innerHTML = '<h3>Extended Euclidean Algorithm Steps:</h3>';
+            steps.forEach(step => {
+                stepsDiv.innerHTML += `<div>${step}</div>`;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            stepsDiv.innerHTML = `Error: ${error.message}`;
         });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        stepsDiv.innerHTML = `Error: ${error.message}`;
-    });
 }
