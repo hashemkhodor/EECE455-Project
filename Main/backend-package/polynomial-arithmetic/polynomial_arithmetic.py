@@ -2,6 +2,26 @@ import numpy.polynomial.polynomial as P
 import numpy
 
 
+import os
+import json
+
+isMAC = False  # If you are macos , set it to True
+delimeter = "\\"
+if isMAC:
+    delimeter = "/"
+
+PATH = os.path.abspath(__file__)
+PATH = PATH.split(delimeter)[:-1]
+PATH = "/".join(PATH)
+
+POLYNOMIALS = json.loads(
+    open(
+        "{}/POLY.txt".format(PATH),
+        "r",
+    ).read()
+)
+
+
 class polynomial:
     def __init__(self, coeff, mod=2):
         assert type(coeff) in (list, int, numpy.ndarray), "Invalid Type"
@@ -99,14 +119,14 @@ class State:
     def toHTMLHex(self):
         skeleton = """<tr>
                     <td colspan="2" rowspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="3">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="3" class="result-text ">{}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="3">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="3" class="result-text ">{}</td>
                 </tr>""".format(
             self.__content__["Q"]
             if type(self.__content__["Q"]) == str
@@ -140,6 +160,65 @@ class State:
             str(self.__content__["r22"]),
             str(self.__content__["b"]),
         )
+        return skeleton
+
+    def toHTMLHex2(self, step_number):
+        if step_number == 1:
+            # Initialization step
+            skeleton = """<tr>
+                             <td colspan="2">Initialization: A1(x) = {}, A2(x) = {}, A3(x) = {}, B1(x) = {}, B2(x) = {}, B3(x) = {} </td>
+                         </tr>""".format(
+                self.__content__["r11"].toHex(),
+                self.__content__["r12"].toHex(),
+                self.__content__["a"].toHex(),
+                self.__content__["r21"].toHex(),
+                self.__content__["r22"].toHex(),
+                self.__content__["b"].toHex(),
+            )
+        else:
+            # Iteration step
+            skeleton = """<tr>
+                             <td colspan="2">Step {}: Q(x) = {}, A1(x) = {}, A2(x) = {}, A3(x) = {}, B1(x) = {}, B2(x) = {}, B3(x) = {}</td>
+                         </tr>""".format(
+                step_number,
+                self.__content__["Q"].toHex(),
+                self.__content__["r11"].toHex(),
+                self.__content__["r12"].toHex(),
+                self.__content__["a"].toHex(),
+                self.__content__["r21"].toHex(),
+                self.__content__["r22"].toHex(),
+                self.__content__["b"].toHex(),
+            )
+        return skeleton
+
+    def toHTMLStr2(self, step_number):
+        if step_number == 1:
+            # Initialization step
+            skeleton = """<tr>
+                             <td>{}, {},  {}, {},  {}, {}</td>
+                           </tr>""".format(
+                str(self.__content__["r11"]),
+                str(self.__content__["r12"]),
+                str(self.__content__["a"]),
+                str(self.__content__["r21"]),
+                str(self.__content__["r22"]),
+                str(self.__content__["b"]),
+            )
+        else:
+            # Iteration step
+            skeleton = """<tr>
+                             <td>{}</td>
+                             <td>{}, {}, {},  {}, {}, {}</td>
+                           </tr>""".format(
+                step_number,
+                str(self.__content__["Q"]),
+                str(self.__content__["r11"]),
+                str(self.__content__["r12"]),
+                str(self.__content__["a"]),
+                str(self.__content__["r21"]),
+                str(self.__content__["r22"]),
+                str(self.__content__["b"]),
+            )
         return skeleton
 
 
@@ -177,31 +256,171 @@ def extendedgcdPoly(a, b, MOD):
     return a, r21, r22
 
 
-class Tasks:
-    def task1():
-        return
+class CLEAN:
+    def clean(POWER: int, operation: str, input1: str, input2: str):
+        try:
+            POWER = int(POWER)
+        except:
+            pass
 
+        VALID_HEX = (
+            [chr(ord("0") + i) for i in range(10)]
+            + [chr(ord("a") + i) for i in range(6)]
+            + [chr(ord("A") + i) for i in range(6)]
+        )
+        VALID_BIN = ["0", "1"]
+        RESULT = {
+            "m_error": "",
+            "m_success": "",
+            "operation_error": "",
+            "operation_success": "",
+            "input1_error": "",
+            "input2_error": "",
+            "input1_success": "",
+            "input2_success": "",
+        }
+        ################## Validated Power == m ##########################
+        if type(POWER) != int:
+            RESULT[
+                "m_error"
+            ] = "Expected integer m instead of {} which is of type {}".format(
+                POWER, type(POWER)
+            )
 
-if __name__ == "__main__":
-    a = polynomial(0x11B)
-    b = polynomial(0x95)
-    # print(a.toHex())
-    with open("out.html", "w") as f:
-        extendedgcdPoly(a, b, a)
-        for i in range(len(STATES)):
-            STATES[i] = STATES[i].toHTMLHex()
-            f.write(STATES[i])
-        print(STATES)
+        elif POWER > 2000:
+            RESULT[
+                "m_error"
+            ] = "Please change your m ({}) to another value less than 2000".format(
+                POWER
+            )
 
+        if RESULT["m_error"] == "":
+            RESULT["m_success"] = "Irreducible polynomial of GF(2^{}) = {}".format(
+                POWER, POLYNOMIALS[str(POWER)]
+            )
+            RESULT["irr_poly"] = polynomial(int(POLYNOMIALS[str(POWER)], 16))
+            RESULT["m"] = POWER
 
-"""
-For generating irreducible polynomials.
-https://sagecell.sagemath.org/
-sage: R = GF(2)['x']
-sage: for p in R.polynomials(983):
-....:     if p.is_irreducible():
-....:         print(p)
-....:         break
-"""
+        ##################################################################
 
-"""x^163 + x^18 + x^17 + x^15 + x^14 + x^12 + x^9 + x^7 + x^6 + x^5 + x^4 + x + 1"""
+        ################## Validate operation ############################
+        if operation not in [
+            "inverse",
+            "modulo",
+            "addition",
+            "subtraction",
+            "multiplication",
+            "division",
+            "inverse_bin",
+        ]:
+            RESULT["operation_error"] = "Invalid operation"
+        else:
+            RESULT["operation_success"] = " "
+            RESULT["operation"] = operation
+
+        ##################################################################
+
+        ################## Validate input1    ############################
+        if input1 == None or len(input1) < 2:
+            RESULT["input1_error"] = "Invalid : empty input"
+
+        elif input1[:2] not in ("0b", "0x"):
+            RESULT[
+                "input1_error"
+            ] = "Invalid: expected to start with 0b for binary or 0x for hexadecimal"
+
+        elif input1[:2] == "0b":
+            IS_BIN = lambda x: x in VALID_BIN
+            if not all(map(IS_BIN, input1[2:])):
+                RESULT[
+                    "input1_error"
+                ] = "Invalid : expected all the characters to be either '0' or '1' "
+            elif RESULT["input1_error"] == "":
+                coeff = list(map(int, input1[2:]))
+                coeff.reverse()
+                # if polynomial(coeff) / RESULT["irr_poly"] != polynomial(0x0):
+                #     RESULT[
+                #         "input1_error"
+                #     ] == "Invalid polynomial, expected to be less than {}".format(
+                #         RESULT["irr_poly"].toHex()
+                #     )
+                # else:
+                RESULT["input1_success"] = "The polynomial of {} is {}".format(
+                    input1, polynomial(coeff)
+                )
+                RESULT["input1"] = polynomial(coeff)
+
+        elif input1[:2] == "0x":
+            IS_HEX = lambda x: x in VALID_HEX
+            if not all(map(IS_HEX, input1[2:])):
+                RESULT[
+                    "input1_error"
+                ] = "Invalid : expected all the characters to be between 0-9 and (a-f or A-F) "
+            elif RESULT["input1_error"] == "":
+                # if polynomial(int(input2, 16)) / RESULT["irr_poly"] != polynomial(0x0):
+                #     RESULT[
+                #         "input1_error"
+                #     ] = "Invalid polynomial, expected to be less than {}".format(
+                #         RESULT["irr_poly"].toHex()
+                #     )
+                # else:
+                RESULT["input1_success"] = "The polynomial of {} is {}".format(
+                    input1, polynomial(int(input1, 16))
+                )
+                RESULT["input1"] = polynomial(int(input1, 16))
+
+        ##################################################################
+
+        ################## Validate input2    ############################
+        if operation == "inverse":
+            pass
+        elif (input2 == None or len(input2) < 2) and operation != "inverse":
+            RESULT["input2_error"] = "Invalid : empty input"
+        elif input2[:2] not in ("0b", "0x"):
+            RESULT[
+                "input2_error"
+            ] = "Invalid: expected to start with 0b for binary or 0x for hexadecimal"
+
+        elif input2[:2] == "0b":
+            IS_BIN = lambda x: x in VALID_BIN
+            if not all(map(IS_BIN, input2[2:])):
+                RESULT[
+                    "input2_error"
+                ] = "Invalid : expected all the characters to be either '0' or '1' "
+            elif RESULT["input2_error"] == "":
+                coeff = list(map(int, input2[2:]))
+                coeff.reverse()
+                # if polynomial(coeff) / RESULT["irr_poly"] != polynomial(0x0):
+                #     RESULT[
+                #         "input2_error"
+                #     ] = "Invalid polynomial, expected to be less than {}".format(
+                #         RESULT["irr_poly"].toHex()
+                #     )
+                # else:
+                RESULT["input2_success"] = "The polynomial of {} is {}".format(
+                    input2, polynomial(coeff)
+                )
+                RESULT["input2"] = polynomial(coeff)
+
+        elif input2[:2] == "0x":
+            IS_HEX = lambda x: x in VALID_HEX
+            if not all(map(IS_HEX, input2[2:])):
+                RESULT[
+                    "input2_error"
+                ] = "Invalid : expected all the characters to be between 0-9 and (a-f or A-F) "
+            elif RESULT["input2_error"] == "":
+                # if polynomial(int(input2, 16)) / RESULT["irr_poly"] != polynomial(0x0):
+                #     RESULT[
+                #         "input2_error"
+                #     ] = "Invalid polynomial, expected to be less than {}".format(
+                #         RESULT["irr_poly"].toHex()
+                #     )
+                # else:
+                RESULT["input2_success"] = "The polynomial of {} is {}".format(
+                    input2, polynomial(int(input2, 16))
+                )
+                RESULT["input2"] = polynomial(int(input2, 16))
+
+        ##################################################################
+
+        return RESULT

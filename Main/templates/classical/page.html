@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Techniques</title>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='./classical/home.jpeg') }}");
+            /* Replace with the actual path to your image file */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 45px;
+            margin-top: 150px;
+        }
+
+        ul {
+            margin-top: 100px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: white;
+            color: #3375FF;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #001f3f;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button.clicked,
+        li.clicked {
+            background-color: #003366;
+            /* Darker blue color for clicked state */
+        }
+
+        output {
+            color: white;
+            font-size: 30px;
+
+
+        }
+
+        .form-container label {
+            display: block;
+            margin: 10px 0;
+            color: white;
+            font-size: 20px;
+        }
+
+        .form-container form input[type="text"] {
+            width: 800px;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-container form input[type="number"] {
+            width: 800px;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-container option {
+            font-size: 20px;
+        }
+
+        .resut {
+            font-size: 30px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Choose Your Encryption Technique</h1>
+    <ul>
+        <li onclick="showAffineForm(); setActiveButton('affineButton');resetResult();" id="affineButton">Affine Cipher
+        </li>
+        <li onclick="showVigenereForm(); setActiveButton('vigenereButton');" id="vigenereButton">Vigenere Cipher</li>
+        <li onclick="showExtendedEuclideanForm(); setActiveButton('extendedEuclideanButton');"
+            id="extendedEuclideanButton">Extended Euclidean Algorithm</li>
+    </ul>
+
+    <div class="form-container">
+        <form id="affineForm" style="display:none;" action="/classical/encrypt3" method="post">
+            <label for="a">Enter integer a:</label>
+            <input type="number" id="a" name="a" required>
+
+            <label for="b">Enter integer b:</label>
+            <input type="number" id="b" name="b" required>
+
+            <label for="message">Enter message:</label>
+            <input type="text" id="message" name="message" required>
+
+            <label for="operation">Select operation:</label>
+            <select id="operation" name="operation">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form id="vigenereForm" style="display:none;" action="/classical/encrypt2" method="post">
+            <label for="vigenereKey">Enter key (word or sentence):</label>
+            <input type="text" id="vigenereKey" name="vigenereKey" required>
+
+            <label for="vigenereMessage">Enter message:</label>
+            <input type="text" id="vigenereMessage" name="vigenereMessage" required>
+
+            <label for="vigenereOperation">Select operation:</label>
+            <select id="vigenereOperation" name="vigenereOperation">
+                <option value="encrypt">Encrypt</option>
+                <option value="decrypt">Decrypt</option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form id="extendedEuclideanForm" style="display:none;" action="/classical/encrypt" method="post">
+            <label for="modulus">Enter modulus:</label>
+            <input type="number" id="modulus" name="modulus" required>
+
+            <label for="integer">Enter integer:</label>
+            <input type="number" id="integer" name="integer" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+
+    <script>
+        // Define your variables
+        var active_form = 'extendedEuclideanForm'; // Replace with your actual value
+        var result = "some_result"; // Replace with your actual value
+
+        // Function to set result to null
+        function resetResult() {
+            result = null;
+            console.log("Result has been set to null");
+        }
+        function setActiveButton(buttonId) {
+            // Remove "clicked" class from all buttons
+            document.querySelectorAll('ul li').forEach(function (button) {
+                button.classList.remove('clicked');
+            });
+
+
+            // Add "clicked" class to the clicked button
+            document.getElementById(buttonId).classList.add('clicked');
+            document.getElementById('result').innerText = ''
+        }
+        function showAffineForm() {
+            document.getElementById("affineForm").style.display = "block";
+            document.getElementById("vigenereForm").style.display = "none";
+            document.getElementById("extendedEuclideanForm").style.display = "none";
+        }
+
+
+        function showVigenereForm() {
+            document.getElementById("vigenereForm").style.display = "block";
+            document.getElementById("affineForm").style.display = "none";
+            document.getElementById("extendedEuclideanForm").style.display = "none";
+        }
+
+
+        function showExtendedEuclideanForm() {
+            document.getElementById("extendedEuclideanForm").style.display = "block";
+            document.getElementById("affineForm").style.display = "none";
+            document.getElementById("vigenereForm").style.display = "none";
+        }
+    </script>
+    <div id="output">
+        <h2>{% if result is defined and active_form == 'extendedEuclideanForm' %}
+            Result: The modular inverse is: {{ result }}
+            {% endif %}</h2>
+        <h2>{% if result is defined and active_form == 'vignere' %}
+            Result of Vigenere: encrypted/decrypted message is : {{ result }}
+            {% endif %}</h2>
+        <h2>{% if result is defined and active_form == 'affine' %}
+            Result of Affine: encrypted/decrypted message is : {{ result }}
+            {% endif %}</h2>
+    </div>
+</body>
+
+</html>
