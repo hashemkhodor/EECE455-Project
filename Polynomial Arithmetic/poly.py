@@ -253,6 +253,7 @@ class Polynomial_Handler:
 
     def handle_mod(RESULT):
         RESULT["op"] = "%"
+        print(RESULT["input2"])
         if RESULT["input2"] == polynomial(0x0):
             RESULT["result_error"] = ""
             RESULT["input2_error"] = "Modulo Zero is not allowed"
@@ -277,9 +278,6 @@ def main():
             input2 = request.form.get("input2")
 
             RESULT = SANITIZE(m, operation, input1, input2)
-
-            RESULT["input1"] = input1
-            RESULT["input2"] = input2
             RESULT["result"] = ""
             RESULT["result_error"] = ""
             RESULT["result_success"] = ""
@@ -312,6 +310,10 @@ def main():
             else:
                 pass
             print(RESULT)
+            if "input1" not in RESULT:
+                RESULT["input1"] = input1
+            if "input2" not in RESULT:
+                RESULT["input2"] = input2
             return render_template(
                 "index3.html",
                 m=m,
