@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("/static/sub.jpeg");
+            background-size: cover ; 
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px; /* Fixed the padding property */
+        }
+
+        header {
+            font-family: 'Georgia', serif;
+            margin-top: 78px;
+            margin-right: 450px; /* Fixed the margin-right property */
+            color: #fff;
+            text-align: center;
+            padding: 40px;
+            font-size: 35px;
+        }
+        
+        header h1 {
+            line-height: 1;
+            margin-top: -20px;
+            padding-top: 35px;
+            margin-right: 200px ; 
+            vertical-align: middle;
+            font-size: 55px;
+        }
+         h2 {
+            font-size: 32px;
+            color:white;
+        }
+        h3 {
+            font-size: 25px;
+            color:white;
+        }
+        hr {
+            margin-top: -100px ;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            color: #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .container label{
+            font-size: 20px;
+            color:white;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: white;
+            color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: white;
+        }
+        
+        #result {
+            margin-top: 10px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            font-size: 25px;
+            
+        }
+        
+        .steps-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .steps-container div {
+            margin-bottom: 10px;
+        }
+        .x-container{
+            font-weight: bold;
+            color: white;
+            margin-left:1400px;
+            margin-top: -400px;
+            font-size: 25px;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header>
+        <h1>Polynomial Arithmetic</h1>
+        <h1>in GF(2^m)</h1>
+    </header>
+    
+    <div class="container">
+        <hr class="line">
+        <h3 class="operation-title">Type 0b for binary format</h3>
+        <label for="mValue">Choose m for GF(2^m):</label>
+        <input type="number" id="mValue" min="1" required>
+
+        <label for="operation">Choose operation:</label>
+        <select id="operation" onchange="handleOperationChange()">
+            <option value="inverse">Inverse</option>
+            <option value="modulo">Modulo</option>
+            <option value="add">Addition</option>
+            <option value="subtract">Subtraction</option>
+            <option value="multiply">Multiplication</option>
+            <option value="divide">Division</option>
+            <!-- Add more operations as needed -->
+        </select>
+
+        <div id="inputBoxes"></div>
+
+        <button onclick="performOperation()">Calculate</button>
+        <div id="result"></div>
+        
+
+        
+    </div>
+    <table id="steps" class="x-container"></table>
+    
+
+    
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
