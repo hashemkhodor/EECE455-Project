@@ -5,7 +5,6 @@ import os
 
 
 ##################### Added By HK ####################################################
-
 # Used to specify the directories of the ciphers.
 BACKEND_PACKAGES = ["AES", "DES", "classical", "polynomial-arithmetic"]
 for BACKEND_PACKAGE in BACKEND_PACKAGES:
@@ -240,6 +239,7 @@ def encrypt3():
 
 
 ########################################################################################################################
+from polynomial_arithmetic import polynomial, extendedgcdPoly, STATES, State
 
 
 class Polynomial_Handler:
@@ -250,6 +250,7 @@ class Polynomial_Handler:
         )
         RESULT["result"] = ""
         for state in STATES:
+            print(state.toHTMLHex())
             RESULT["result"] += state.toHTMLHex()
 
     def handle_inverse_bin(RESULT):
@@ -478,9 +479,6 @@ class CLEAN:
         return RESULT
 
 
-from polynomial_arithmetic import polynomial, extendedgcdPoly, STATES
-
-
 @app.route("/polynomial-arithmetic", methods=["GET", "POST"])
 def main():
     if request.method == "POST":
@@ -495,6 +493,8 @@ def main():
                 RESULT["input1"] = input1
             if "input2" not in RESULT:
                 RESULT["input2"] = input2
+            if not RESULT["input2"]:
+                RESULT["input2"] = ""
             RESULT["result"] = ""
             RESULT["result_error"] = ""
             RESULT["result_success"] = ""
@@ -544,12 +544,21 @@ def main():
                 result=(
                     RESULT["result"]
                     if type(RESULT["result"]) == str
-                    else RESULT["result"]
+                    else RESULT["result"].toHex()
                 ),
                 result_success=RESULT["result_success"],
                 result_error=RESULT["result_error"],
-                input1=RESULT["input1"],
-                input2=RESULT["input2"],
+                input1=(
+                    RESULT["input1"]
+                    if type(RESULT["input1"]) in (str, None)
+                    else RESULT["input1"].toHex()
+                ),
+                input2=(
+                    RESULT["input2"]
+                    if type(RESULT["input2"]) in (str, None)
+                    else RESULT["input2"].toHex()
+                ),
+                # input2=RESULT["input2"],
                 op=RESULT["op"],
                 input1_raw=RESULT["input1_raw"],
                 input2_raw=RESULT["input2_raw"],

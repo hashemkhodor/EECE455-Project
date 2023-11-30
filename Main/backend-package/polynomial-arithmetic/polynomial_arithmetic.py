@@ -118,7 +118,7 @@ class State:
 
     def toHTMLHex(self):
         skeleton = """<tr>
-                    <td colspan="2" rowspan="2">{}</td>
+                    <td colspan="2" rowspan="2" class="result-text ">{}</td>
                     <td colspan="2" class="result-text ">{}</td>
                     <td colspan="2" class="result-text ">{}</td>
                     <td colspan="3" class="result-text ">{}</td>
@@ -142,15 +142,15 @@ class State:
 
     def toHTMLStr(self):
         skeleton = """<tr>
-                    <td colspan="2" rowspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="3">{}</td>
+                    <td colspan="2" rowspan="2" class="result-text ">{}</td>
+                    <td colspan="2" class="result-text "> {}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="3" class="result-text ">{}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="3">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="3" class="result-text ">{}</td>
                 </tr>""".format(
             self.__content__["Q"],
             str(self.__content__["r11"]),
