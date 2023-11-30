@@ -278,10 +278,16 @@ def main():
             input2 = request.form.get("input2")
 
             RESULT = SANITIZE(m, operation, input1, input2)
+            if "input1" not in RESULT:
+                RESULT["input1"] = input1
+            if "input2" not in RESULT:
+                RESULT["input2"] = input2
             RESULT["result"] = ""
             RESULT["result_error"] = ""
             RESULT["result_success"] = ""
             RESULT["op"] = ""
+            RESULT["input2_raw"] = input2
+            RESULT["input1_raw"] = input1
 
             print(operation)
             if (
@@ -309,11 +315,7 @@ def main():
                 Polynomial_Handler.handle_inverse_bin(RESULT)
             else:
                 pass
-            print(RESULT)
-            if "input1" not in RESULT:
-                RESULT["input1"] = input1
-            if "input2" not in RESULT:
-                RESULT["input2"] = input2
+
             return render_template(
                 "index3.html",
                 m=m,
@@ -329,13 +331,15 @@ def main():
                 result=(
                     RESULT["result"]
                     if type(RESULT["result"]) == str
-                    else RESULT["result"].toHex()
+                    else RESULT["result"]
                 ),
                 result_success=RESULT["result_success"],
                 result_error=RESULT["result_error"],
                 input1=RESULT["input1"],
                 input2=RESULT["input2"],
                 op=RESULT["op"],
+                input1_raw=RESULT["input1_raw"],
+                input2_raw=RESULT["input2_raw"],
             )
     return render_template("index3.html", operation=request.form.get("operation"))
 

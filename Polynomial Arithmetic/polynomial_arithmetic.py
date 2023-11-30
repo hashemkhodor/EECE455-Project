@@ -99,14 +99,14 @@ class State:
     def toHTMLHex(self):
         skeleton = """<tr>
                     <td colspan="2" rowspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="3">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="3" class="result-text ">{}</td>
                 </tr>
                 <tr>
-                    <td colspan="2">{}</td>
-                    <td colspan="2">{}</td>
-                    <td colspan="3">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="2" class="result-text ">{}</td>
+                    <td colspan="3" class="result-text ">{}</td>
                 </tr>""".format(
             self.__content__["Q"]
             if type(self.__content__["Q"]) == str
@@ -246,6 +246,7 @@ if __name__ == "__main__":
 
     A = polynomial(0x22)
     B = polynomial(0x30)
+    print(polynomial(0x49))
     # a = polynomial(
     #     10715086071862673209484250490600018105614048117055336074437503883703510511249361224931983788156958581275946729175531468251871452856923140435984577574698574803934567774824230985421074605062371141877954182153046474983581941267398767559165543946077062914571196477686552801484396110979607617293687910828544
     # )

@@ -22,6 +22,10 @@
             max-width: 400px;
             margin: 0 auto;
         }
+
+        .result-text {
+            color: white;
+        }
     </style>
 </head>
 
@@ -59,7 +63,7 @@
             {% endif %}
         </div>
         <div class="form-group">
-            <label for="m">Enter a number (1-1000):</label>
+            <label for="m">Enter m:</label>
             <input type="number" class="form-control {% if m_error %}is-invalid{% elif m_success %}is-valid{% endif %}"
                 id="m" name="m" min="1" max="1000" required value="{{m}}">
             {% if m_error %}
@@ -73,7 +77,7 @@
         <div class="form-group">
             <label for="input1">Enter polynomial:</label>
             <input class="form-control {% if input1_error %}is-invalid{% elif input1_success %}is-valid{% endif %}"
-                id="input1" name="input1" required value="{{input1}}">
+                id="input1" name="input1" required value="{{input1_raw}}">
             {% if input1_error %}
             <div class="invalid-feedback feedback">{{ input1_error }}</div>
             {% elif input1_success %}
@@ -84,7 +88,7 @@
         <div class="form-group">
             <label for="input1">Enter first polynomial:</label>
             <input class="form-control {% if input1_error %}is-invalid{% elif input1_success %}is-valid{% endif %}"
-                id="input1" name="input1" required value="{{input1}}">
+                id="input1" name="input1" required value="{{input1_raw}}">
             {% if input1_error %}
             <div class="invalid-feedback feedback">{{ input1_error }}</div>
             {% elif input1_success %}
@@ -94,7 +98,7 @@
         <div class="form-group">
             <label for="input2">Enter second polynomial:</label>
             <input class="form-control {% if input2_error %}is-invalid{% elif input2_success %}is-valid{% endif %}"
-                id="input2" name="input2" required value="{{input2}}">
+                id="input2" name="input2" required value="{{input2_raw}}">
             {% if input2_error %}
             <div class="invalid-feedback feedback">{{ input2_error }}</div>
             {% elif input2_success %}
@@ -137,15 +141,15 @@
         <table class="table table-bordered" cellspacing=12>
             <tr>
                 <th colspan="3">A(x)</th>
-                <th colspan="10">{{input1}}</th>
+                <th colspan="10" class="result-text ">{{input1}}</th>
             </tr>
             <tr>
                 <th colspan="3">B(x)</th>
-                <th colspan="10">{{input2}} </th>
+                <th colspan="10" class="result-text ">{{input2}} </th>
             </tr>
             <tr>
                 <th colspan="3">A(x) {{op}} B(x)</th>
-                <th colspan="10">{{ result }} </th>
+                <th colspan="10" class="result-text ">{{ result }} </th>
             </tr>
 
 
