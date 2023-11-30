@@ -1,0 +1,40 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Dropdown Example</title>
+</head>
+
+<body>
+    <h1>Flask Dropdown Example</h1>
+
+    <form method="post">
+        <label for="dropdown">Select an option:</label>
+        <select id="dropdown" name="dropdown" onchange="this.form.submit()">
+            <option value="empty" {% if selected_value=='empty' %}selected{% endif %}></option>
+            <option value="inv" {% if selected_value=='inv' %}selected{% endif %}>Inverse</option>
+            <option value="mod" {% if selected_value=='mod' %}selected{% endif %}>Mod</option>
+            <option value="add" {% if selected_value=='add' %}selected{% endif %}>Addition</option>
+            <option value="sub" {% if selected_value=='sub' %}selected{% endif %}>Subtraction</option>
+            <option value="mult" {% if selected_value=='mult' %}selected{% endif %}>Multiplication</option>
+            <option value="div" {% if selected_value=='div' %}selected{% endif %}>Division</option>
+        </select>
+    </form>
+
+    {% if selected_value %}
+    <p>You selected: {{ selected_value }}</p>
+    <!-- Render the content based on the selected value -->
+    {% if selected_value == 'option1' %}
+    <p>Content for Option 1</p>
+    {% elif selected_value == 'option2' %}
+    <p>Content for Option 2</p>
+    {% elif selected_value == 'option3' %}
+    <p>Content for Option 3</p>
+    {% endif %}
+    {% endif %}
+</body>
+
+</html>

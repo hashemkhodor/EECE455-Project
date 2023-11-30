@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-image: url("/static/sub.jpeg");
-            background-size: cover ; 
+            background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
             margin: 0;
-            padding: 20px; /* Fixed the padding property */
+            padding: 20px;
+            /* Fixed the padding property */
         }
 
         header {
             font-family: 'Georgia', serif;
             margin-top: 78px;
-            margin-right: 450px; /* Fixed the margin-right property */
+            margin-right: 450px;
+            /* Fixed the margin-right property */
             color: #fff;
             text-align: center;
             padding: 40px;
             font-size: 35px;
         }
-        
+
         header h1 {
             line-height: 1;
             margin-top: -40px;
             padding-top: 20px;
-            margin-right: -450px ; 
+            margin-right: -450px;
             vertical-align: middle;
             font-size: 24px;
         }
-        header h2 {
 
-        }
+        header h2 {}
+
         hr {
-            margin-top: -100px ;
+            margin-top: -100px;
         }
-        
+
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -45,20 +48,22 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
+
         label {
             display: block;
             margin-top: 10px;
         }
-        
-        input, select, button {
+
+        input,
+        select,
+        button {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
             margin-bottom: 10px;
             box-sizing: border-box;
         }
-        
+
         button {
             background-color: white;
             color: #007BFF;
@@ -66,24 +71,24 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         button:hover {
             background-color: white;
         }
-        
+
         #result {
             margin-top: 20px;
             font-weight: bold;
             color: #333;
         }
-        
+
         .steps-container {
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        
+
         .steps-container div {
             margin-bottom: 10px;
         }
@@ -92,15 +97,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
     <header>
         <h1>Polynomial Arithmetic</h1>
         <h1>in GF(2^m)</h1>
     </header>
-    
+
     <div class="container">
         <hr class="line">
-        
+
         <h2 class="operation-title">Polynomial Operations</h2>
         <h3 class="operation-title">Type 0b for binary format</h3>
         <label for="mValue">Choose m for GF(2^m):</label>
@@ -108,12 +114,13 @@
 
         <label for="operation">Choose operation:</label>
         <select id="operation" onchange="handleOperationChange()">
-            <option value="inverse">Inverse</option>
-            <option value="modulo">Modulo</option>
-            <option value="add">Addition</option>
-            <option value="subtract">Subtraction</option>
-            <option value="multiply">Multiplication</option>
-            <option value="divide">Division</option>
+            <option value="0" {% if selected_value=='0' %}selected{% endif %}></option>
+            <option value="inverse" {% if selected_value=='inverse' %}selected{% endif %}>Inverse</option>
+            <option value="modulo" {% if selected_value=='modulo' %}selected{% endif %}>Modulo</option>
+            <option value="add" {% if selected_value=='add' %}selected{% endif %}>Addition</option>
+            <option value="subtract" {% if selected_value=='subtract' %}selected{% endif %}>Subtraction</option>
+            <option value="multiply" {% if selected_value=='multiply' %}selected{% endif %}>Multiplication</option>
+            <option value="divide" {% if selected_value=='divide' %}selected{% endif %}>Division</option>
             <!-- Add more operations as needed -->
         </select>
 
@@ -127,4 +134,5 @@
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
+
 </html>

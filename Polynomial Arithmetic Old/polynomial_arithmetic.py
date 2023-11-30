@@ -95,7 +95,6 @@ class State:
             ]
         ), "Invalid Content"
         self.__content__ = content
-
     def toHTMLHex(self):
         skeleton = """<tr>
                     <td colspan="2" rowspan="2">{}</td>
@@ -141,65 +140,64 @@ class State:
             str(self.__content__["b"]),
         )
         return skeleton
-
     def toHTMLHex2(self, step_number):
-        if step_number == 1:
-            # Initialization step
-            skeleton = """<tr>
+         if step_number == 1:
+         # Initialization step
+             skeleton = """<tr>
                              <td colspan="2">Initialization: A1(x) = {}, A2(x) = {}, A3(x) = {}, B1(x) = {}, B2(x) = {}, B3(x) = {} </td>
                          </tr>""".format(
-                self.__content__["r11"].toHex(),
-                self.__content__["r12"].toHex(),
-                self.__content__["a"].toHex(),
-                self.__content__["r21"].toHex(),
-                self.__content__["r22"].toHex(),
-                self.__content__["b"].toHex(),
-            )
-        else:
-            # Iteration step
-            skeleton = """<tr>
+                 self.__content__["r11"].toHex(),
+                 self.__content__["r12"].toHex(),
+                 self.__content__["a"].toHex(),
+                 self.__content__["r21"].toHex(),
+                 self.__content__["r22"].toHex(),
+                 self.__content__["b"].toHex(),
+             )
+         else:
+             # Iteration step
+             skeleton = """<tr>
                              <td colspan="2">Step {}: Q(x) = {}, A1(x) = {}, A2(x) = {}, A3(x) = {}, B1(x) = {}, B2(x) = {}, B3(x) = {}</td>
                          </tr>""".format(
-                step_number,
-                self.__content__["Q"].toHex(),
-                self.__content__["r11"].toHex(),
-                self.__content__["r12"].toHex(),
-                self.__content__["a"].toHex(),
-                self.__content__["r21"].toHex(),
-                self.__content__["r22"].toHex(),
-                self.__content__["b"].toHex(),
-            )
-        return skeleton
+                 step_number,
+                 self.__content__["Q"].toHex(),
+                 self.__content__["r11"].toHex(),
+                 self.__content__["r12"].toHex(),
+                 self.__content__["a"].toHex(),
+                 self.__content__["r21"].toHex(),
+                 self.__content__["r22"].toHex(),
+                 self.__content__["b"].toHex(),
+             )
+         return skeleton
 
     def toHTMLStr2(self, step_number):
-        if step_number == 1:
-            # Initialization step
-            skeleton = """<tr>
+         if step_number == 1:
+             # Initialization step
+             skeleton = """<tr>
                              <td>{}, {},  {}, {},  {}, {}</td>
                            </tr>""".format(
-                str(self.__content__["r11"]),
-                str(self.__content__["r12"]),
-                str(self.__content__["a"]),
-                str(self.__content__["r21"]),
-                str(self.__content__["r22"]),
-                str(self.__content__["b"]),
-            )
-        else:
-            # Iteration step
-            skeleton = """<tr>
+                 str(self.__content__["r11"]),
+                 str(self.__content__["r12"]),
+                 str(self.__content__["a"]),
+                 str(self.__content__["r21"]),
+                 str(self.__content__["r22"]),
+                 str(self.__content__["b"]),
+             )
+         else:
+             # Iteration step
+             skeleton = """<tr>
                              <td>{}</td>
                              <td>{}, {}, {},  {}, {}, {}</td>
                            </tr>""".format(
-                step_number,
-                str(self.__content__["Q"]),
-                str(self.__content__["r11"]),
-                str(self.__content__["r12"]),
-                str(self.__content__["a"]),
-                str(self.__content__["r21"]),
-                str(self.__content__["r22"]),
-                str(self.__content__["b"]),
-            )
-        return skeleton
+                 step_number,
+                 str(self.__content__["Q"]),
+                 str(self.__content__["r11"]),
+                 str(self.__content__["r12"]),
+                 str(self.__content__["a"]),
+                 str(self.__content__["r21"]),
+                 str(self.__content__["r22"]),
+                 str(self.__content__["b"]),
+             )
+         return skeleton
 
 
 STATES = []
@@ -242,25 +240,21 @@ class Tasks:
 
 
 if __name__ == "__main__":
-    import numpy as np
-
-    A = polynomial(0x22)
-    B = polynomial(0x30)
-    # a = polynomial(
-    #     10715086071862673209484250490600018105614048117055336074437503883703510511249361224931983788156958581275946729175531468251871452856923140435984577574698574803934567774824230985421074605062371141877954182153046474983581941267398767559165543946077062914571196477686552801484396110979607617293687910828544
-    # )
-    # b = polynomial(
-    #     10715086072318626732094842504906000181056140481170553360744375038837035105112493612249319837881569585812759467291755314682518714528569231404359845775746985748039345677748242309854210746050623711418779541821530464749835819412673987675591655439460770629145711964776865528014843961109796076172936879108285443
-    # )
-    # # print(a.toHex())
-    # with open("out.html", "w") as f:
-    #     f.write("<table>")
-    #     extendedgcdPoly(a, b, a)
-    #     for i in range(len(STATES)):
-    #         STATES[i] = STATES[i].toHTMLHex()
-    #         f.write(STATES[i])
-    #     print(STATES)
-    #     f.write("</table>")
+    a = polynomial(
+        10715086071862673209484250490600018105614048117055336074437503883703510511249361224931983788156958581275946729175531468251871452856923140435984577574698574803934567774824230985421074605062371141877954182153046474983581941267398767559165543946077062914571196477686552801484396110979607617293687910828544
+    )
+    b = polynomial(
+        10715086072318626732094842504906000181056140481170553360744375038837035105112493612249319837881569585812759467291755314682518714528569231404359845775746985748039345677748242309854210746050623711418779541821530464749835819412673987675591655439460770629145711964776865528014843961109796076172936879108285443
+    )
+    # print(a.toHex())
+    with open("out.html", "w") as f:
+        f.write("<table>")
+        extendedgcdPoly(a, b, a)
+        for i in range(len(STATES)):
+            STATES[i] = STATES[i].toHTMLHex()
+            f.write(STATES[i])
+        print(STATES)
+        f.write("</table>")
 
 
 """
