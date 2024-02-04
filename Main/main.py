@@ -17,7 +17,6 @@ app = Flask(__name__)
 app.static_folder = "static"
 
 
-print(sys.path)
 ##################### CONFIGURATION SECTION ###################################
 import os
 import json
@@ -62,7 +61,6 @@ def AES():
         # hex_value = hex(p)[2:]
         # plaintext="0x" + "0" * (len(hex_value) % 2) + hex_value
 
-        print(plaintext)
 
         # k = int(request.form.get('key'),16)
         # hex_value = hex(k)[2:]
@@ -86,7 +84,6 @@ def AES():
                 startOfRound, afterSubBytes, afterShiftRows, afterMixColumns, roundKey
             )
         ]
-        print(len(result2))
 
     return render_template(
         "./AES/AES.html", ciphertext=ciphertext, result1=result1, result2=result2
@@ -250,7 +247,6 @@ class Polynomial_Handler:
         )
         RESULT["result"] = ""
         for state in STATES:
-            print(state.toHTMLHex())
             RESULT["result"] += state.toHTMLHex()
 
     def handle_inverse_bin(RESULT):
@@ -267,7 +263,6 @@ class Polynomial_Handler:
         )
         RESULT["result"] = ""
         for state in STATES:
-            print(state)
             RESULT["result"] += state.toHTMLHex()
 
         return
@@ -294,7 +289,6 @@ class Polynomial_Handler:
 
     def handle_mod(RESULT):
         RESULT["op"] = "%"
-        print(RESULT["input2"])
         if RESULT["input2"] == polynomial(0x0):
             RESULT["result_error"] = ""
             RESULT["input2_error"] = "Modulo Zero is not allowed"
@@ -502,17 +496,14 @@ def main():
             RESULT["input2_raw"] = input2
             RESULT["input1_raw"] = input1
 
-            print(operation)
             if (
                 not RESULT["m_success"]
                 or not RESULT["input1_success"]
                 or (not RESULT["input2_success"] and operation != "inverse")
                 or not RESULT["operation_success"]
             ):
-                print("DEAL")
                 pass
             elif operation == "inverse":
-                print("DEAL")
                 Polynomial_Handler.handle_inverse(RESULT)
             elif operation == "modulo":
                 Polynomial_Handler.handle_mod(RESULT)
